@@ -1,0 +1,56 @@
+version: "3.9"
+
+services:
+  loki:
+    image: grafana/loki:2.9.0
+    command: -config.file=/etc/loki/local-config.yaml
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki-config.yaml:/etc/loki/local-config.yaml:ro
+      - ./loki-data:/loki        # for chunks & index
+      - ./loki-wal:/wal          # for WAL (write-ahead log)
+
+  promtail:
+    image: grafana/promtail:2.9.0
+    volumes:
+      - /Users/mkurabalakota/Documents/GitHub/OpsMindJava/logs:/logs    # logs folder
+      - /Users/mkurabalakota/Documents/GitHub/OpsMindJava/promtail-config.yaml:/etc/promtail/promtail-config.yaml  # config file
+      - /tmp/positions:/tmp
+    command: -config.file=/etc/promtail/promtail-config.yaml
+
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    build:
+      context: .
+      dockerfile: Dockerfile.grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+#    volumes:
+#      - ./grafana.ini:/etc/grafana/grafana.ini   # <-- mount your custom ini
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS_ALLOW_INSECURE=1
+      - GF_SMTP_ENABLED=true
+      - GF_SMTP_HOST=mailhost.corp.equinix.com:25
+      - GF_SMTP_USER=mkurabalakota@equinix.com
+      - GF_SMTP_FROM_ADDRESS=mkurabalakota@equinix.com
+      - GF_SMTP_FROM_NAME=Grafana Alerting
+      - GF_SMTP_SKIP_VERIFY=false
+      - GF_SMTP_STARTTLS_POLICY=OpportunisticStartTLS
+
+    depends_on:
+      - prometheus
+      - loki
+
+
+

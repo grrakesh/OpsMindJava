@@ -1,0 +1,18 @@
+server:
+  port: 8889
+
+logging:
+  file:
+    path: ./logs  # This should match LOG_PATH in logback
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, prometheus
+  endpoint:
+    health:
+      show-details: always
+
+spring:
+  application:
+    name: spring-demo
