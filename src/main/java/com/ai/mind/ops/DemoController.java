@@ -37,7 +37,9 @@ public class DemoController {
         log.info("Login attempt with username: {}", username);
 
         String risky = null;
-        try {
+        if (risky != null) {
+            try {
+        }
             return risky.toString();
         } catch (NullPointerException e) {
             log.error("Simulated NPE during login for user {}", username, e);
