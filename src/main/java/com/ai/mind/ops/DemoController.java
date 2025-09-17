@@ -38,11 +38,14 @@ public class DemoController {
 
         String risky = null;
         try {
-            return risky.toString();
+            if (risky != null) {
+                return risky.toString();
+            }
         } catch (NullPointerException e) {
             log.error("Simulated NPE during login for user {}", username, e);
             throw e;
         }
+        return "Login failed: risky variable is null";
     }
 
     @GetMapping("/process")
