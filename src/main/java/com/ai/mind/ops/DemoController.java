@@ -15,11 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class DemoController {
     private static final Logger log = LoggerFactory.getLogger(DemoController.class);
 
-
     @GetMapping("/hello")
     public String hello() {
         log.error("/api/hello called");
-
         try {
             String s = null;
             // This will throw a NullPointerException
@@ -28,20 +26,18 @@ public class DemoController {
             log.error("Caught NullPointerException in /hello endpoint", e);
             throw e; // rethrow so that it’s still visible as an error
         }
-
         return "Hello from Spring Boot!";
     }
 
     @PostMapping("/login")
     public String login(@RequestParam String username, @RequestParam String password) {
         log.info("Login attempt with username: {}", username);
-
         String risky = null;
-        try {
-            return risky.toString();
-        } catch (NullPointerException e) {
-            log.error("Simulated NPE during login for user {}", username, e);
-            throw e;
+        if (risky != null) {
+           return risky.toString();
+        } else {
+            log.error("Risky variable is null during login for user {}", username);
+            return "Error: risky variable is null";
         }
     }
 
