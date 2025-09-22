@@ -1,0 +1,109 @@
+:root {
+  --brand: #e6002d;
+  --brand-dark: #b00022;
+  --accent: #0f172a;
+  --muted: #475569;
+  --card-bg: rgba(255,255,255,0.96); /* More opaque for clarity */
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+  width: 100vw;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  color: var(--accent);
+  background-image: url('/images/equinix.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.login-card {
+  z-index: 1;
+  width: min(92vw, 420px);
+  padding: 28px 24px;
+  border-radius: 18px;
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(0,0,0,0.10);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.20), inset 0 1px 0 rgba(255,255,255,0.55);
+}
+.title {
+  margin: 0 0 6px;
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--brand);
+  text-shadow: 0 2px 8px rgba(230,0,45,0.06);
+}
+.sub {
+  margin: 0 0 18px;
+  font-size: 13px;
+  color: var(--muted);
+}
+label {
+  display: block;
+  margin-top: 14px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #334155;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.09);
+}
+input {
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #dfe3e8;
+  background: #fff;
+  outline: none;
+  transition: box-shadow .2s, border-color .2s;
+}
+input:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 4px rgba(230,0,45,.16);
+}
+.actions {
+  margin-top: 20px;
+  display: grid;
+  gap: 10px;
+}
+button {
+  width: 100%;
+  padding: 12px;
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(180deg, var(--brand), var(--brand-dark));
+  color: #fff;
+  font-weight: 750;
+  letter-spacing: .2px;
+  cursor: pointer;
+  box-shadow: 0 12px 22px rgba(230,0,45,.25);
+  transition: transform .08s ease, filter .15s ease;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.10);
+}
+button:hover { filter:brightness(1.05); }
+button:active { transform:translateY(1px); }
+#response {
+  margin-top: 14px;
+  font-weight: 700;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.12);
+}
+#details {
+  display: none;
+  margin-top: 10px;
+  text-align: left;
+  background: #fff6f7;
+  padding: 12px;
+  border-radius: 10px;
+  color: #b91c1c;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 12px;
+  white-space: pre-wrap;
+  border: 1px solid #fee2e2;
+}
+@media (max-width:420px){
+  .title {font-size:26px;}
+  .login-card {padding:24px 20px;}
+}

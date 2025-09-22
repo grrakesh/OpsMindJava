@@ -1,42 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Login Demo</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Equinix Login</title>
+    <link rel="stylesheet" href="/css/login.css" />
 </head>
 <body>
-<h1>Login Page</h1>
-<form id="loginForm">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required><br><br>
-
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required><br><br>
-
-    <button type="submit">Login</button>
-</form>
-
-<p id="response"></p>
-
+<div class="login-card" role="form" aria-label="Equinix Login">
+    <h1 class="title">Login</h1>
+    <p class="sub">Welcome back. Please sign in to continue.</p>
+    <form id="loginForm" novalidate>
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" required autocomplete="username" />
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" required autocomplete="current-password" />
+        <div class="actions">
+            <button type="submit">Sign In</button>
+            <div class="hint">By continuing you agree to the acceptable use policy.</div>
+        </div>
+    </form>
+    <p id="response" aria-live="polite"></p>
+    <pre id="details"></pre>
+</div>
 <script>
-    document.getElementById("loginForm").addEventListener("submit", async function (event) {
-        event.preventDefault(); // stop page reload
-
-        const username = document.getElementById("username").value;
-        const password = document.getElementById("password").value;
-
-        try {
-            const response = await fetch("/api/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
-            });
-
-            const text = await response.text();
-            document.getElementById("response").innerText = text;
-        } catch (error) {
-            document.getElementById("response").innerText = "Error: " + error;
+    const form = document.getElementById("loginForm");
+    const respEl = document.getElementById("response");
+    const detailsEl = document.getElementById("details");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+      respEl.textContent = "Signing in…";
+      respEl.style.color = "#334155";
+      detailsEl.style.display = "none";
+      try {
+        const r = await fetch("/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
+        });
+        let data = {};
+        try { data = await r.json(); } catch {}
+        if (r.ok) {
+          respEl.textContent = `200 OK - ${data.message || "Login successful"}`;
+          respEl.style.color = "green";
+        } else {
+          respEl.textContent = `${r.status} ${r.statusText} - ${data.message || "Error"}`;
+          respEl.style.color = "red";
+          detailsEl.textContent = (data.details || data.error || "").toString();
+          detailsEl.style.display = detailsEl.textContent ? "block" : "none";
         }
+      } catch (err) {
+        respEl.textContent = "Network error";
+        respEl.style.color = "red";
+        detailsEl.style.display = "none";
+      }
     });
-</script>
+  </script>
 </body>
 </html>
