@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class DemoController {
     private static final Logger log = LoggerFactory.getLogger(DemoController.class);
 
-
     @GetMapping("/hello")
     public String hello() {
         log.error("/api/hello called");
@@ -37,12 +36,15 @@ public class DemoController {
         log.info("Login attempt with username: {}", username);
 
         String risky = null;
-        try {
-            return risky.toString();
-        } catch (NullPointerException e) {
-            log.error("Simulated NPE during login for user {}", username, e);
-            throw e;
+        if (risky != null) {
+            try {
+                return risky.toString();
+            } catch (NullPointerException e) {
+                log.error("Simulated NPE during login for user {}", username, e);
+                throw e;
+            }
         }
+        return "User not found"; // Added fallback
     }
 
     @GetMapping("/process")
