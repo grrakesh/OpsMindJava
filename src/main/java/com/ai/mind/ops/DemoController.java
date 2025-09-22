@@ -9,12 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping("/api")
 public class DemoController {
     private static final Logger log = LoggerFactory.getLogger(DemoController.class);
-
 
     @GetMapping("/hello")
     public String hello() {
@@ -38,7 +36,12 @@ public class DemoController {
 
         String risky = null;
         try {
-            return risky.toString();
+            if (risky != null) {
+                return risky.toString();
+            } else {
+                log.error("Risky variable is null");
+                return "Error: risky variable is null";
+            }
         } catch (NullPointerException e) {
             log.error("Simulated NPE during login for user {}", username, e);
             throw e;
