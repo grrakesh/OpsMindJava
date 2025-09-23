@@ -46,10 +46,16 @@ public class DemoController {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            return ResponseEntity.ok(Map.of(
-                    "status", "success",
-                    "message", risky.toString()
-            ));
+            if (risky != null) {
+                return ResponseEntity.ok(Map.of(
+                        "status", "success",
+                        "message", risky.toString()
+                ));
+            } else {
+                response.put("status", "error");
+                response.put("message", "risky variable is null");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            }
         } catch (NullPointerException e) {
             log.error("Simulated NPE during login for user {}", username, e);
 
