@@ -40,7 +40,9 @@ public class DemoController {
         try {
             return risky.toString();
         } catch (NullPointerException e) {
-            log.error("Simulated NPE during login for user {}", username, e);
+            if (risky != null) {
+                log.error("Simulated NPE during login for user {}", username, e);
+            }
             throw e;
         }
     }
