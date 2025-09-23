@@ -26,7 +26,7 @@ public class DemoController {
             s.length();
         } catch (NullPointerException e) {
             log.error("Caught NullPointerException in /hello endpoint", e);
-            throw e; // rethrow so that it’s still visible as an error
+            throw e; // rethrow so that itu2019s still visible as an error
         }
 
         return "Hello from Spring Boot!";
@@ -37,11 +37,11 @@ public class DemoController {
         log.info("Login attempt with username: {}", username);
 
         String risky = null;
-        try {
+        if (risky != null) {
             return risky.toString();
-        } catch (NullPointerException e) {
-            log.error("Simulated NPE during login for user {}", username, e);
-            throw e;
+        } else {
+            log.error("risky is null for user {}", username);
+            return "Failed to login: risky is null";
         }
     }
 
