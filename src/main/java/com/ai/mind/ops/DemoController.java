@@ -12,12 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping("/api")
 public class DemoController {
     private static final Logger log = LoggerFactory.getLogger(DemoController.class);
-
 
     @GetMapping("/hello")
     public String hello() {
@@ -46,6 +44,9 @@ public class DemoController {
         Map<String, Object> response = new HashMap<>();
 
         try {
+            if (risky == null) {
+                throw new NullPointerException("'risky' variable is null");
+            }
             return ResponseEntity.ok(Map.of(
                     "status", "success",
                     "message", risky.toString()
