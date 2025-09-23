@@ -12,12 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping("/api")
 public class DemoController {
     private static final Logger log = LoggerFactory.getLogger(DemoController.class);
-
 
     @GetMapping("/hello")
     public String hello() {
@@ -46,10 +44,16 @@ public class DemoController {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            return ResponseEntity.ok(Map.of(
-                    "status", "success",
-                    "message", risky.toString()
-            ));
+            if (risky != null) {
+                return ResponseEntity.ok(Map.of(
+                        "status", "success",
+                        "message", risky.toString()
+                ));
+            } else {
+                response.put("status", "error");
+                response.put("message", "risky was null");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            }
         } catch (NullPointerException e) {
             log.error("Simulated NPE during login for user {}", username, e);
 
