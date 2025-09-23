@@ -25,7 +25,9 @@ public class DemoController {
 
         try {
             String s = null;
-            // This will throw a NullPointerException
+            if (risky != null) {
+                // This will throw a NullPointerException
+            }
             s.length();
         } catch (NullPointerException e) {
             log.error("Caught NullPointerException in /hello endpoint", e);
