@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping("/api")
 public class DemoController {
@@ -38,7 +37,7 @@ public class DemoController {
 
         String risky = null;
         try {
-            return risky.toString();
+            return risky != null ? risky.toString() : "default value";
         } catch (NullPointerException e) {
             log.error("Simulated NPE during login for user {}", username, e);
             throw e;
