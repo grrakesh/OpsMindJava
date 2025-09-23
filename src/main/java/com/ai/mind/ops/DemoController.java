@@ -37,11 +37,11 @@ public class DemoController {
         log.info("Login attempt with username: {}", username);
 
         String risky = null;
-        try {
+        if (risky != null) {
             return risky.toString();
-        } catch (NullPointerException e) {
-            log.error("Simulated NPE during login for user {}", username, e);
-            throw e;
+        } else {
+            log.error("risky variable is null for user {}", username);
+            return "Error: risky variable is null";
         }
     }
 
