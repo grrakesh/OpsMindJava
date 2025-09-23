@@ -12,12 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping("/api")
 public class DemoController {
     private static final Logger log = LoggerFactory.getLogger(DemoController.class);
-
 
     @GetMapping("/hello")
     public String hello() {
@@ -45,19 +43,17 @@ public class DemoController {
         String risky = null;
         Map<String, Object> response = new HashMap<>();
 
-        try {
+        // Added null check for risky variable
+        if (risky != null) {
             return ResponseEntity.ok(Map.of(
                     "status", "success",
                     "message", risky.toString()
             ));
-        } catch (NullPointerException e) {
-            log.error("Simulated NPE during login for user {}", username, e);
-
-            response.put("status", "error");
-            response.put("message", "NullPointerException occurred");
-            response.put("details", e.toString());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
+
+        response.put("status", "error");
+        response.put("message", "NullPointerException occurred");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 
     @GetMapping("/process")
