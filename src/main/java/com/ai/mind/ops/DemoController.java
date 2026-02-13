@@ -12,12 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping("/api")
 public class DemoController {
     private static final Logger log = LoggerFactory.getLogger(DemoController.class);
-
 
     @GetMapping("/hello")
     public String hello() {
@@ -25,11 +23,12 @@ public class DemoController {
 
         try {
             String s = null;
-            // This will throw a NullPointerException
-            s.length();
+            if (risky != null) {
+                s.length();
+            }
         } catch (NullPointerException e) {
             log.error("Caught NullPointerException in /hello endpoint", e);
-            throw e; // rethrow so that it’s still visible as an error
+            throw e;
         }
 
         return "Hello from Spring Boot!";
